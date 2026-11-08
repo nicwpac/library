@@ -19,6 +19,8 @@ function addBookToLibrary(title, author, pageCount, isRead = false) {
     refreshBookshelf();
 }
 
+let removeBtns = [];
+
 function refreshBookshelf() {
 bookshelf.replaceChildren();
 
@@ -47,12 +49,58 @@ bookshelf.replaceChildren();
         cardAuthor.textContent = book.author;
         card.appendChild(cardAuthor);
 
+        const cardBot = document.createElement("div");
+        cardBot.classList.add("card-bot");
+        card.appendChild(cardBot);
+
+        const cardBotBtns = document.createElement("div");
+        cardBotBtns.classList.add("card-bot-btns");
+        cardBot.appendChild(cardBotBtns);
+
+        const btnRemoveBook = document.createElement("button");
+        btnRemoveBook.classList.add("card-btn-remove");
+        removeBtns.push(btnRemoveBook);
+        btnRemoveBook.removeConfirm = false;
+        btnRemoveBook.addEventListener("click", () => {
+            if (btnRemoveBook.removeConfirm == true) {
+                card.remove();
+                const idx = library.indexOf(book);
+                library.splice(idx, 1);
+            }
+            else {
+                btnRemoveBook.removeConfirm = true;
+                btnRemoveBook.textContent = "Remove?";
+            }
+        });
+        btnRemoveBook.textContent = "Remove";
+        cardBotBtns.appendChild(btnRemoveBook);
+
+        const btnReadBook = document.createElement("button");
+        btnReadBook.classList.add("card-btn-read");
+        btnReadBook.addEventListener("click", () => {
+            book.hasRead = !book.hasRead;
+            btnReadBook.textContent = book.hasRead ? "Undo" : "Finish";
+            cardHasRead.textContent = book.hasRead ? "Read" : "Unread";
+        });
+        btnReadBook.textContent = book.hasRead ? "Undo" : "Finish";
+        cardBotBtns.appendChild(btnReadBook);
+
         const cardPageCount = document.createElement("p");
         cardPageCount.classList.add("card-page-count");
         cardPageCount.textContent = book.pageCount;
-        card.appendChild(cardPageCount);
+        cardBot.appendChild(cardPageCount);
     });
 }
+
+window.addEventListener("keydown", (key) => {
+    if (key.code == "Escape") {
+        console.log("Escape down!");
+        removeBtns.forEach(btn => {
+            btn.removeConfirm = false;
+            btn.textContent = "Remove";
+        });
+    }
+})
 
 const bookshelf = document.querySelector("#bookshelf");
 
@@ -64,12 +112,12 @@ btnNewBook.addEventListener("click", () => {
 });
 const newBookBtnDiv = document.querySelector("#new-book-btn-div");
 
-
 const inputTitle = document.querySelector("#book-title");
 const inputAuthor = document.querySelector("#book-author");
 const inputPageCount = document.querySelector("#book-page-count");
 const btnRead = document.querySelector("#btn-book-read");
-btnRead.addEventListener("click", () => {
+btnRead.addEventListener("click", (event) => {
+    event.preventDefault();
     btnRead.textContent = btnRead.textContent == "✔" ? "✖" : "✔";
 })
 const btnAddBook = document.querySelector("#btn-add-book");
@@ -79,7 +127,7 @@ btnAddBook.addEventListener("click", (event) => {
     inputTitle.value,
     inputAuthor.value,
     inputPageCount.value,
-    btnRead.value     
+    btnRead.textContent == "✔" ? true : false 
     );
 });
 

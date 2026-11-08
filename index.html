@@ -8,13 +8,14 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-
-    <div id="header">
+    <div id="logo">
         <h1>My Library</h1>
+    </div>
+    <div id="header">
+        
     </div>
 
     <div id="side-bar">
-        <h2>Sidebar!</h2>
         <div id="new-book-form" hidden="hidden">
             <form>
                 <h3>Add book</h3>
@@ -30,11 +31,13 @@
                     <label for="book-page-count">Page Count</label>
                     <input type="number" id="book-page-count" name="book_page_count">
                 </div>
-                <div>
-                    <label for="btn-book-read">Read</label>
-                    <button id="btn-book-read">✖</button>
+                <div id="form-read-add-buttons">
+                    <div>
+                        <label for="btn-book-read">Read</label>
+                        <button id="btn-book-read">✖</button>
+                    </div>
+                    <button id="btn-add-book">Add Book</button>
                 </div>
-                <button id="btn-add-book">Add Book</button>
             </form>
         </div>
          <div id="new-book-btn-div">
