@@ -1,15 +1,30 @@
 const library = [];
 
-function Book(title, author, pageCount, isRead = false) {
-    if (!new.target)
-        throw Error("You must use the \"new\" operator to call a constructor!");
+// function Book(title, author, pageCount, isRead = false) {
+//     if (!new.target)
+//         throw Error("You must use the \"new\" operator to call a constructor!");
 
-    this.id = crypto.randomUUID();
-    this.title = title;
-    this.author = author;
-    this.pageCount = pageCount;
-    this.hasRead = isRead;
-    this.author.info = function() {
+//     this.id = crypto.randomUUID();
+//     this.title = title;
+//     this.author = author;
+//     this.pageCount = pageCount;
+//     this.hasRead = isRead;
+//     this.author.info = function() {
+//         return `${this.title} by ${this.author}, ${this.pageCount} pages, ${this.hasRead ? "has been read" : "not yet read"}.`;
+//     }
+// }
+
+class Book {
+    constructor(title, author, pageCount, isRead = false) {
+        this.title = title;
+        this.author = author;
+        this.pageCount = pageCount;
+        this.isRead = isRead;
+    }
+
+    id = crypto.randomUUID();
+
+    info() {
         return `${this.title} by ${this.author}, ${this.pageCount} pages, ${this.hasRead ? "has been read" : "not yet read"}.`;
     }
 }
@@ -22,7 +37,7 @@ function addBookToLibrary(title, author, pageCount, isRead = false) {
 let removeBtns = [];
 
 function refreshBookshelf() {
-bookshelf.replaceChildren();
+    bookshelf.replaceChildren();
 
     library.forEach((book) => {
         console.table(library);
